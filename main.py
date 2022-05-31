@@ -9,6 +9,7 @@ local_session.add(AccountType(account_type_name = 'savings'))
 local_session.add(Accounts(account_name = 'Marko', account_surname = 'Penava', account_number = 12345678, account_email = 'marko.penava@fpmoz.sum.ba', account_type_id = 1))
 local_session.add(Accounts(account_name = 'Ivo', account_surname = 'Ivić', account_number = 87654321, account_email = 'ivo.ivic@fpmoz.sum.ba', account_type_id = 1))
 local_session.add(Accounts(account_name = 'Lovro', account_surname = 'Penava', account_number = 22222222, account_email = 'lovro.penava@fpmoz.sum.ba', account_type_id = 1))
+local_session.add(Accounts(account_name = 'Pero', account_surname = 'Perić', account_number = 12312312, account_email = 'ivo.ivic@fpmoz.sum.ba', account_type_id = 1))
 
 local_session.add(TransactionType(transaction_name = 'deposit'))
 local_session.add(TransactionType(transaction_name = 'withdraw'))
@@ -47,9 +48,10 @@ for a in accounts:
 '''
 
 '''Deleting data
-local_session.query(Accounts).filter(Accounts.account_id == 3).delete()
+local_session.query(Accounts).filter(Accounts.account_id == 4).delete()
 '''
 
-# print(withdraw(12345678, 313, 1))
+
+# print(deposit(12345678, 313, 1))
 
 local_session.commit()
