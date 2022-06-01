@@ -1,4 +1,5 @@
 from database import Session, db, Accounts, AccountType, Transactions, TransactionType, BankLocations
+from sqlalchemy import func
 local_session=Session(bind=db)
 
 ''' Inserting data to database
@@ -51,7 +52,26 @@ for a in accounts:
 local_session.query(Accounts).filter(Accounts.account_id == 4).delete()
 '''
 
+'''Selecting'''
 
-# print(deposit(12345678, 313, 1))
+most_transaction = local_session.query(BankLocations.city, BankLocations.bank_address, func.count(Transactions.bank_location_id).label('count')).filter(Transactions.bank_location_id == BankLocations.bank_location_id).group_by(BankLocations.bank_location_id)
+print('Banke po broju transakcija: ')
+
+for bank in most_transaction:
+    print(bank.bank_address,",",bank.city,"-",bank.count )
+
+print("---------------------------------- ")
+
+account_with_most_transaction = local_session.query(Accounts.account_name, Accounts.account_surname, func.max(Transactions.account_id)).filter(Transactions.account_id == Accounts.account_id)
+
+for acc in account_with_most_transaction:
+    print("Osoba koja je obavila najviše transakcija je:",acc.account_name, acc.account_surname)
+
+print("---------------------------------- ")
+
+average_deposit = local_session.query(func.avg(Transactions.amount).label('average')).filter(Transactions.transaction_type_id == 1)
+
+for bank in average_deposit:
+    print("Prosječna uplata novca iznosi:","{:.2f}".format(bank.average))
 
 local_session.commit()
